@@ -23,6 +23,7 @@ import {userStore} from "@/main";
 * Ici on poc :
 * vue-class-component, vue-property-decorator et VUEX-CLASS-MODULE pour le store
 * VUEX-CLASS-MODULE est bien compatible ac vuex4 donc on peut subscribe et tous et tous
+* fragment is a success tooo
 *
 * Downside :
 * actions et mutations pas wrap par `actions` et `mutations` donc moin bon sémantiquement à l'accès
