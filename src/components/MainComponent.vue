@@ -4,10 +4,11 @@
   <h2> props : {{ msg }} </h2>
   <p> object props:  {{ chichon }} </p>
   <p> pute count : {{ count }} </p>
-  <div> pute first name: {{ userStore.firstName }} </div>
+  <div> pute first name: {{ userStore.state.firstName }} </div>
   <button @click="muteLeStorePd">call mutation to set state main store and substore</button>
-  <div> {{ userStore.myFookingNodeMapSir }} </div>
-  <div> state du subModule: {{userStore.subModuleSir.chichon}} </div>
+  <div> {{ userStore.state.myFookingNodeMapSir }} </div>
+  <div> {{ userStore.modules.genericSubModule.state.chichon}} </div>
+
   <h1> FIN MAIN COMPONENT </h1>
   <h1> ------------------ </h1>
 </template>
@@ -16,8 +17,9 @@
 
 import {Options, Vue, Prop, Inject, Model, Watch} from "vue-property-decorator";
 import {Context} from "vuex-smart-module";
-import {UserStore} from "@/store/UserStore";
-import {userStore} from "@/main";
+import { mainStore, UserModule, UserStore } from "@/store/UserStore";
+import { store } from "@/main";
+import { genericSubModule } from "@/store/GenericSubModule";
 
 /*
 * Ici on poc :
@@ -31,7 +33,7 @@ import {userStore} from "@/main";
 */
 @Options({})
 export default class MainComponent extends Vue {
-  @Inject() userStore!: UserStore // le store est proprement injecté
+  userStore!: UserStore; // le store est proprement injecté
   @Prop() msg!: string;
   @Prop() chichon!: { muteLeStorePd: number };
   @Inject() count!: any;
@@ -47,15 +49,15 @@ export default class MainComponent extends Vue {
   }
 
   muteLeStorePd() {
-    console.log(this.userStore.firstName)
-    this.userStore.setFirstName("dqhdlhd")
-    this.userStore.setNodes()
-    this.userStore.subModuleSir.setChichon()
+    this.userStore.mutations.setFirstName("plop");
+    this.userStore.mutations.setLastName("dqd");
+    this.userStore.mutations.setNodes();
+    this.userStore.modules.genericSubModule.mutations.setChichon();
   }
 
   created() {
-    console.log("fuck:")
-    console.log(this.userStore)
+    this.userStore = mainStore.context(store);
+    const toto = mainStore.context(store);
   }
 
   mounted() {
